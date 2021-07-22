@@ -6,34 +6,33 @@ using System.Linq;
 
 namespace Sets
 {
-
     public class SetValueElem : ISetElement
     {
+        private string value;
 
-        public string Value;
+        public SetValueElem(string value)
+        {
+            this.value = value;
+        }
 
         public ISetElement this[int index] { get => throw new InvalidOperationException("Cannot index a set value element"); }
 
         public bool Equals(ISetElement elem)
         {
-            if (elem is SetValueElem) return Value == ((SetValueElem)elem).Value;
-            /*else*/
+            if (elem is SetValueElem)
+            {
+                return this.value == ((SetValueElem)elem).value;
+            }
+
             return false;
         }
 
-        public ISetElement Duppl() => new SetValueElem(this.Value);
+        public override string ToString() => this.value;
 
-        public override string ToString() => Value;
-
-
-        //Aliases for Duppl
-        public ISetElement Dupplicate() => Duppl();
-
-
-        public SetValueElem(string value)
+        // Aliases for Duppl
+        public ISetElement Dupplicate()
         {
-            Value = value;
+            return new SetValueElem(this.value);
         }
-
     }
 }

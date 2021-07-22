@@ -39,7 +39,7 @@ namespace Sets
             return c;
         }
 
-        public static Set operator -(Set a, Set b) // пересечение
+        public static Set operator -(Set a, Set b) // разность
         {
             Set c = new Set(false);
             for (int i = 0; i < a.Count; i++)
@@ -230,6 +230,20 @@ namespace Sets
         }
 
         public int CountOf(string value) => this.CountOf(new SetValueElem(value));
+
+        public bool IsMulti()
+        {
+            // pretty complicated since we have n CountOf calls complexity around n^2
+            foreach (var item in this.elements)
+            {
+                if (this.CountOf(item) > 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public IEnumerator<ISetElement> GetEnumerator()
         {

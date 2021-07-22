@@ -334,21 +334,71 @@ namespace SetOperations
                     continue;
                 }
 
-                if (inputSets.Count == 1)
+                // pick operations
+                // предусмотреть (без учета кратных вхождений)
+                byte choice;
+                Console.WriteLine("Доступные операции:\n1 - Объединение(без учёта кратных вхождений)\n2 - Пересечение(без учёта кратных вхождений)\n3 - Симметрическая разность(без учета кратных вхождений)\n4 - Разность двух исходных множеств\n5 - Булеан исходного множества\n6 - Декартово произведение\n7 - Вывести без повторений всевозможные ориентированные множества из элементов исходного неориентированного множества, количество элементов в ориентированном множестве задается n\n8 - Вывести без повторений всевозможные неориентированные множества из элементов исходного неориентированного множества, количество элементов в ориентированном множестве задается n\n9...\n10 - Объединение(с учетом кратных вхождений)\n11 - Пересечение(с учетом кратных вхождений)\n12 - Симметрическая разность(с учетом кратных вхождений)\n13 - Разность(с учетом кратных)");
+                Console.WriteLine("Введите номер операции:");
+                choice = byte.Parse(Console.ReadLine());
+                Set result = new Set(false);
+                switch (choice)
                 {
-                    Console.WriteLine($"Only one set given\n\n");
-                    Console.WriteLine("\nPress any key to reset...");
-                    Console.ReadKey(true);
-                    continue;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 9:
+                        break;
+                    case 10:
+                        result = inputSets[0] + inputSets[1];
+                        for (int i = 2; i < inputSets.Count; i++)
+                        {
+                            result += inputSets[i];
+                        }
+
+                        break;
+                    case 11:
+                        break;
+                    case 12:
+                        result = inputSets[0] * inputSets[1];
+                        for (int i = 2; i < inputSets.Count; i++)
+                        {
+                            result += inputSets[i];
+                        }
+
+                        break;
+                    case 13:
+                        if (inputSets.Count != 2)
+                        {
+                            Console.WriteLine("Отсутствует необходимое количество множеств.");
+                            break;
+                        }
+
+                        result = inputSets[0] - inputSets[1];
+                        break;
+                    default:
+                        break;
                 }
 
-                // find
-                Set result = new Set(false);
-                result = inputSets[1] * inputSets[0];
-                for (int i = 2; i < inputSets.Count; i++)
-                {
-                    result *= inputSets[i];
-                }
+                // if (inputSets.Count == 1)
+                // {
+                //    Console.WriteLine($"Only one set given\n\n");
+                //    Console.WriteLine("\nPress any key to reset...");
+                //    Console.ReadKey(true);
+                //    continue;
+                // }
 
                 // Output
                 Console.WriteLine("For given sets:");
@@ -357,7 +407,7 @@ namespace SetOperations
                     Console.WriteLine(item);
                 }
 
-                Console.WriteLine("\nThe result of the set symmetric difference is: ");
+                Console.WriteLine("\nThe result is: ");
                 Console.WriteLine(result);
                 Console.WriteLine("\n\nPress any key to reset...");
                 Console.ReadKey(true);
