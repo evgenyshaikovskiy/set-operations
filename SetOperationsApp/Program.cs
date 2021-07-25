@@ -11,9 +11,9 @@ namespace SetOperations
         public static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
-            Dictionary<string, ISetElement> nameDict = new Dictionary<string, ISetElement>();
-            List<Set> inputSets = new List<Set>();
-            Stack<Set> setStack = new Stack<Set>(); // for parsing
+            Dictionary<string, ISetElement> nameDict = new ();
+            List<Set> inputSets = new ();
+            Stack<Set> setStack = new (); // for parsing
 
             while (true)
             {
@@ -334,26 +334,80 @@ namespace SetOperations
                     continue;
                 }
 
+                Console.WriteLine("Given sets:");
+                foreach (var item in inputSets)
+                {
+                    Console.WriteLine(item);
+                }
+
                 // pick operations
                 // предусмотреть (без учета кратных вхождений)
                 byte choice;
-                Console.WriteLine("Доступные операции:\n1 - Объединение(без учёта кратных вхождений)\n2 - Пересечение(без учёта кратных вхождений)\n3 - Симметрическая разность(без учета кратных вхождений)\n4 - Разность двух исходных множеств\n5 - Булеан исходного множества\n6 - Декартово произведение\n7 - Вывести без повторений всевозможные ориентированные множества из элементов исходного неориентированного множества, количество элементов в ориентированном множестве задается n\n8 - Вывести без повторений всевозможные неориентированные множества из элементов исходного неориентированного множества, количество элементов в ориентированном множестве задается n\n9...\n10 - Объединение(с учетом кратных вхождений)\n11 - Пересечение(с учетом кратных вхождений)\n12 - Симметрическая разность(с учетом кратных вхождений)\n13 - Разность(с учетом кратных)");
+                Console.WriteLine("Доступные операции:\n1 - Объединение(без учёта кратных вхождений)" +
+                    "\n2 - Пересечение(без учёта кратных вхождений)" +
+                    "\n3 - Симметрическая разность(без учета кратных вхождений)" +
+                    "\n4 - Разность двух исходных множеств" +
+                    "\n5 - Булеан исходного множества" +
+                    "\n6 - Декартово произведение" +
+                    "\n7 - Вывести без повторений всевозможные ориентированные множества из элементов исходного неориентированного множества, количество элементов в ориентированном множестве задается n" +
+                    "\n8 - Вывести без повторений всевозможные неориентированные множества из элементов исходного неориентированного множества, количество элементов в ориентированном множестве задается n" +
+                    "\n9..." +
+                    "\n10 - Объединение(с учетом кратных вхождений)" +
+                    "\n11 - Пересечение(с учетом кратных вхождений)" +
+                    "\n12 - Симметрическая разность(с учетом кратных вхождений)" +
+                    "\n13 - Разность(с учетом кратных)");
+
                 Console.WriteLine("Введите номер операции:");
                 choice = byte.Parse(Console.ReadLine());
                 Set result = new Set(false);
                 switch (choice)
                 {
                     case 1:
+                        result = inputSets[0] + inputSets[1];
+                        for (int i = 2; i < inputSets.Count; i++)
+                        {
+                            result += inputSets[i];
+                        }
+
+                        result = Set.DeleteRepeatingElements(result);
                         break;
                     case 2:
+                        result = inputSets[0] % inputSets[1];
+                        for (int i = 2; i < inputSets.Count; i++)
+                        {
+                            result %= inputSets[i];
+                        }
+
+                        result = Set.DeleteRepeatingElements(result);
                         break;
                     case 3:
+                        result = inputSets[0] * inputSets[1];
+                        for (int i = 2; i < inputSets.Count; i++)
+                        {
+                            result += inputSets[i];
+                        }
+
+                        result = Set.DeleteRepeatingElements(result);
                         break;
                     case 4:
+                        if (inputSets.Count != 2)
+                        {
+                            Console.WriteLine("Отсутствует необходимое количество множеств.");
+                            break;
+                        }
+
+                        result = inputSets[0] - inputSets[1];
+                        result = Set.DeleteRepeatingElements(result);
                         break;
                     case 5:
                         break;
                     case 6:
+                        result = Set.CartesianMultiplication(inputSets[0], inputSets[1]);
+                        for (int i = 2; i < inputSets.Count; i++)
+                        {
+                            result = Set.CartesianMultiplication(result, inputSets[i]);
+                        }
+
                         break;
                     case 7:
                         break;
@@ -370,6 +424,12 @@ namespace SetOperations
 
                         break;
                     case 11:
+                        result = inputSets[0] % inputSets[1];
+                        for (int i = 2; i < inputSets.Count; i++)
+                        {
+                            result %= inputSets[i];
+                        }
+
                         break;
                     case 12:
                         result = inputSets[0] * inputSets[1];
@@ -401,11 +461,6 @@ namespace SetOperations
                 // }
 
                 // Output
-                Console.WriteLine("For given sets:");
-                foreach (var item in inputSets)
-                {
-                    Console.WriteLine(item);
-                }
 
                 Console.WriteLine("\nThe result is: ");
                 Console.WriteLine(result);

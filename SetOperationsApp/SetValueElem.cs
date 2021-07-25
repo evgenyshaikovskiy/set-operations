@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Sets
 {
+    // useless??
     public class SetValueElem : ISetElement
     {
         private string value;
@@ -19,9 +20,9 @@ namespace Sets
 
         public bool Equals(ISetElement elem)
         {
-            if (elem is SetValueElem)
+            if (elem is SetValueElem elem1)
             {
-                return this.value == ((SetValueElem)elem).value;
+                return this.value == elem1.value;
             }
 
             return false;

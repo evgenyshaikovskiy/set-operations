@@ -31,12 +31,10 @@ namespace Sets
 
         public ISetElement this[int index] { get => this.elements[index]; }
 
-        // basic operations
+        // все операции определенные ниже идут с учетом кратных вхождений
         public static Set operator *(Set a, Set b) // симметрическая разность
         {
-            Set c = new Set(false);
-            c = (a - b) + (b - a);
-            return c;
+            return (a - b) + (b - a);
         }
 
         public static Set operator -(Set a, Set b) // разность
@@ -89,8 +87,57 @@ namespace Sets
             return a;
         }
 
+        public static Set operator %(Set a, Set b) // пересечение
+        {
+            Set ret = new (false);
+            for (int i = 0; i < a.Count; i++)
+            {
+                ISetElement element = a[i].Dupplicate();
+                if (b.Contains(element) && !ret.Contains(element))
+                {
+                    int count = b.CountOf(element) > a.CountOf(element) ? a.CountOf(element) : b.CountOf(element);
+                    for (int j = 0; j < count; j++)
+                    {
+                        // добавляем элемент необходимое количество раз
+                        ret.Add(element);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        public static Set CartesianMultiplication(Set set1, Set set2)
+        {
+            Set ret = new (false);
+            for (int i = 0; i < set1.Count; i++)
+            {
+                for (int j = 0; j < set2.Count; j++)
+                {
+                    ret.Add(new Set(true) { set1[i], set2[j] });
+                }
+            }
+
+            return ret;
+        }
+
+        public static Set DeleteRepeatingElements(Set set)
+        {
+            // можно придумать что-то с циклами, но не хочется
+            Set ret = new (false);
+            for (int i = 0; i < set.Count; i++)
+            {
+                if (!ret.Contains(set[i]))
+                {
+                    ret.Add(set[i]);
+                }
+            }
+
+            return ret;
+        }
+
         // methods
-        public bool Equals(ISetElement setElement) // check equality between elem and "this"
+        public bool Equals(ISetElement setElement) // checks equality between elem and "this"
         {
             if (setElement is Set)
             {
